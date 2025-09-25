@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Collect Fees</title>
+</head>
+<style>
+    body {
+        background-color: #f7f7f7;
+    }
+   .student-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        border-radius: 4px; /* rectangle with slight rounding */
+    }
+    .table-custom th {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+    }
+    .table-custom td {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .btn-action {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+     h1.responsive-title {
+    font-size: 2.5rem; /* large desktop size */
+  }
+
+  @media (max-width: 576px) {
+    h1.responsive-title {
+      font-size: 1.75rem; /* smaller on mobile */
+    }
+  }
+</style>
+
+<body>
+     <div class="d-flex justify-content-between align-items-center top-text" style="padding: 50px 30px 20px 30px;">
+  <span>
+    <a href="{% url 'fees' %}" class="nav-link p-0">Collect Fees</a>
+  </span>
+  <h1 class="m-0 mx-auto text-center fs-1 fs-sm-3">Fee Defaulter</h1>
+</div>
+    
+
+    
+    <div id="message-container" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1100; display: none;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show m-0 rounded-0" role="alert" style="text-align:center;">
+            {{ message }}
+            <button type="button" class="btn-close" aria-label="Close" onclick="hideMessage()"></button>
+        </div>
+        {% endfor %}
+        
+        
+    </div>
+   <div class="container mt-4">
+
+    <!-- Search -->
+    <div style="position: relative;">
+        <form method="GET" class="d-flex">
+            <input type="text" id="student-search" placeholder="Search by Student ID..."
+                   class="form-control" style="max-width: 300px;" autocomplete="off">
+            <button type="submit" class="btn btn-success"> Search</button>
+            <div id="search-results" class="list-group"
+                 style="position: absolute; top: 38px; width: 300px; z-index: 1000;"></div>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Student Name</th>
+                    <!-- Hidden on mobile -->
+                    <th class="d-none d-md-table-cell">Course Name</th>
+                    <th class="d-none d-md-table-cell">Course Fees</th>
+                    <th class="d-none d-md-table-cell">First Fees Date</th>
+                    <th>Pending Installments</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in defaulters %}
+                <tr style="background-color: {{ entry.color }}">
+                    <td>
+                        {% if entry.student.student_img %}
+                            <img src="{{ entry.student.student_img.url }}" style="width:50px;height:50px;filter: blur(5px);">
+                        {% else %} No Photo {% endif %}
+                    </td>
+                    <td>{{ entry.student.student_name }}</td>
+                    <!-- Hidden on mobile -->
+                    <td class="d-none d-md-table-cell">{{ entry.student.get_course_name_display }}</td>
+                    <td class="d-none d-md-table-cell">₹{{ entry.student.course_fees }}</td>
+                    <td class="d-none d-md-table-cell">{{ entry.student.fees_date|date:"d-m-Y" }}</td>
+                    <td><strong>{{ entry.pending }}</strong> month(s)</td>
+                    <td>
+                        <!-- Desktop Buttons -->
+                        <div class="d-none d-md-block">
+                            <a href="{% url 'student_detail' entry.student.pk %}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{% url 'collect_fees' entry.student.pk %}" class="btn btn-success btn-sm">Collect Fees</a>
+                        </div>
+                        <!-- Mobile Buttons -->
+                        <div class="d-flex gap-1 d-md-none">
+                            <a href="{% url 'student_detail' entry.student.pk %}" class="btn btn-info btn-sm" style="font-size: 12px; padding: 4px 6px;">View</a>
+                            <a href="{% url 'collect_fees' entry.student.pk %}" class="btn btn-success btn-sm" style="font-size: 12px; padding: 4px 6px;">Fees</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No defaulters found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('student-search');
+    const resultsBox = document.getElementById('search-results');
+
+    searchInput.addEventListener('keyup', function () {
+        const query = this.value.trim();
+        if (query.length > 0) {
+            fetch(`/search-student-default-ids/?q=${query}`)
+                .then(res => res.json())
+                .then(data => {
+                    resultsBox.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            const link = document.createElement('a');
+                            link.href = `/fees-defaulter-list/?q=${item.Student_id}`;
+                            link.textContent = `${item.Student_id} - ${item.name}`;
+                            link.classList.add('list-group-item', 'list-group-item-action');
+                            resultsBox.appendChild(link);
+                        });
+                    } else {
+                        resultsBox.innerHTML = `<div class="list-group-item">No matches found</div>`;
+                    }
+                });
+        } else {
+            resultsBox.innerHTML = '';
+        }
+    });
+});
+</script>
+
+
+
+
+    <script src="{% static 'js/min.js' %}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Collect Fees</title>
+</head>
+<style>
+  body {
+    background-color: #f7f7f7;
+  }
+
+  .form-container {
+    background: white;
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+   h1.responsive-title {
+    font-size: 2.5rem; /* large desktop size */
+  }
+
+  @media (max-width: 576px) {
+    h1.responsive-title {
+      font-size: 1.75rem; /* smaller on mobile */
+    }
+  }
+</style>
+
+<body>
+   <div class="d-flex justify-content-between align-items-center top-text" style="padding: 50px 30px 20px 30px;">
+  <span>
+    <a href="{% url 'defaulter' %}" class="nav-link p-0">Fee Defaulter</a>
+  </span>
+  <h1 class="m-0 mx-auto text-center fs-1 fs-sm-3">Collect Fees</h1>
+</div>
+
+ {% if messages %}
+    <div style="margin-top: 10px;">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg rounded-3 border-0"
+                 style="background: {% if message.tags == 'error' %}#ffdddd{% elif message.tags == 'success' %}#ddffdd{% elif message.tags == 'warning' %}#fff4d1{% else %}#dceaff{% endif %};
+                        color: #333; padding: 12px 18px; font-size: 15px; display: flex; align-items: center; gap: 10px;">
+
+                {% if message.tags == 'error' %}
+                    <i class="bi bi-x-circle-fill" style="color:red; font-size: 18px; text-align: center;"></i>
+                {% elif message.tags == 'success' %}
+                    <i class="bi bi-check-circle-fill" style="color: #28a745; font-size: 18px;"></i>
+                {% elif message.tags == 'warning' %}
+                    <i class="bi bi-exclamation-triangle-fill" style="color: #ffc107; font-size: 18px;"></i>
+                {% else %}
+                    <i class="bi bi-info-circle-fill" style="color: #0d6efd; font-size: 18px;"></i>
+                {% endif %}
+
+                <span style="flex: 1;">{{ message }}</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+</div>
+
+
+  <div class="container my-lg-4 my-md-3" id="search-container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-sm-10 col-12">
+      <form id="sticky-search" 
+        method="GET" 
+        class="d-flex shadow rounded-pill overflow-hidden" 
+        role="search" onsubmit="return false;">
+        <input class="form-control border-0 rounded-start-pill px-4 py-2"
+          style="background-color: rgba(50, 205, 184, 0.1);" 
+          type="search" placeholder="Search Students By Id"
+          aria-label="Search" name="q" id="student-search">
+        <button class="btn btn-primary px-4 rounded-end-pill" type="submit"
+          style="background-color: rgb(51, 161, 51); font-weight: bold;">
+          Search
+        </button>
+      </form>
+      <ul id="search-results" 
+        class="list-group position-absolute" 
+        style="z-index:1000; display:none; width: 300px;"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- Dummy content for scroll -->
+
+
+  <div class="container">
+    <div class="form-container">
+     <form method="POST" enctype="multipart/form-data" id="student-form">
+    {% csrf_token %}
+    <!-- Hidden field for update -->
+    <input type="hidden" name="student_id" id="student_id">
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.student_name.label_tag }} <span style="color: red;">*</span>
+            {{ form.student_name }}
+            {% for error in form.student_name.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.father_name.label_tag }}
+            {{ form.father_name }}
+            {% for error in form.father_name.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <label for="{{ form.dob.id_for_label }}">
+                {{ form.dob.label }} 
+                <span style="color: red;">Age :</span> 
+                <span id="age" style="color:green;"></span>
+            </label>
+            {{ form.dob }}
+            {% for error in form.dob.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% for error in form.email.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.phone_number.label_tag }}
+            {{ form.phone_number }}
+            {% for error in form.phone_number.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.Student_id.label_tag }}
+            {{ form.Student_id }}
+            {% for error in form.Student_id.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.fees_date.label_tag }}
+            {{ form.fees_date }}
+            {% for error in form.fees_date.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.course_name.label_tag }}
+            {{ form.course_name }}
+            {% for error in form.course_name.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.course_fees.label_tag }}
+            {{ form.course_fees }}
+            {% for error in form.course_fees.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.installment_no.label_tag }}
+            {{ form.installment_no }}
+            {% for error in form.installment_no.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            {{ form.student_img.label_tag }}
+            {{ form.student_img }}
+            {% for error in form.student_img.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+            <span id="img-error" style="color: red; display: none; margin-left: 5px;">
+                Please select the profile image for the first installment.
+            </span>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary px-5">Submit</button>
+         <a  id="clear-btn" style="margin-left: 40px; cursor: pointer; color: blue; font-weight: bold;">Clear All </a>
+    </div>
+</form>
+
+    </div>
+
+
+    <script src="{% static 'js/min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+
+        <script>document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('student-search');
+
+    // Function to get query parameter by name from URL
+    function getQueryParam(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    // Set input value from ?q= in URL
+    const q = getQueryParam('q');
+    if (q) {
+        searchInput.value = q;
+
+        // Optionally trigger your existing search/autofill function here:
+        // For example, trigger 'keyup' event or call your search function manually.
+        const event = new Event('keyup');
+        searchInput.dispatchEvent(event);
+    }
+});
+
+
+
+
+
+
+// =========fixed search bar ============== 
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.getElementById("sticky-search");
+    const searchContainer = document.getElementById("search-container");
+
+    // Placeholder div to prevent layout jump when fixed
+    const placeholder = document.createElement("div");
+    placeholder.style.height = searchContainer.offsetHeight + "px";
+    placeholder.style.display = "none";
+    searchContainer.parentNode.insertBefore(placeholder, searchContainer);
+
+    const stickyPoint = searchContainer.offsetTop;
+
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > stickyPoint) {
+        searchContainer.classList.add("fixed-top","bg-white","shadow","py-4");
+        placeholder.style.display = "block"; // show placeholder
+      } else {
+        searchContainer.classList.remove("fixed-top", "bg-white", "shadow","py-4");
+        placeholder.style.display = "none"; // hide placeholder
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+</body>
+
+</html>
