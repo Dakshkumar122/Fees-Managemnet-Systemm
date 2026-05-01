@@ -128,37 +128,71 @@
     </div>
 </div>
 
-
-
-
-
-
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+// ==================== DEFOULTER PAGE SEARCH ONLY ====================
+document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('student-search');
     const resultsBox = document.getElementById('search-results');
+    let searchTimeout;
 
-    searchInput.addEventListener('keyup', function () {
-        const query = this.value.trim();
-        if (query.length > 0) {
-            fetch(`/search-student-default-ids/?q=${query}`)
-                .then(res => res.json())
-                .then(data => {
-                    resultsBox.innerHTML = '';
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            const link = document.createElement('a');
-                            link.href = `/fees-defaulter-list/?q=${item.Student_id}`;
-                            link.textContent = `${item.Student_id} - ${item.name}`;
-                            link.classList.add('list-group-item', 'list-group-item-action');
-                            resultsBox.appendChild(link);
-                        });
-                    } else {
-                        resultsBox.innerHTML = `<div class="list-group-item">No matches found</div>`;
-                    }
-                });
-        } else {
+    if (!searchInput) return;
+
+    function performSearch(query) {
+        if (query.length === 0) {
+            resultsBox.style.display = 'none';
             resultsBox.innerHTML = '';
+            return;
+        }
+
+        fetch(`/search-student-default-ids/?q=${encodeURIComponent(query)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+            .then(data => {
+                resultsBox.style.display = 'block';
+                resultsBox.innerHTML = '';
+
+                if (data && data.length > 0) {
+                    data.forEach(item => {
+                        const link = document.createElement('a');
+                        link.href = `/fees-defaulter-list/?q=${encodeURIComponent(item.Student_id)}`;
+                        link.textContent = `${item.Student_id} - ${item.name}`;
+                        link.classList.add('list-group-item', 'list-group-item-action');
+                        link.style.cursor = 'pointer';
+                        link.style.textDecoration = 'none';
+                        link.style.color = '#333';
+                        
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            window.location.href = this.href;
+                        });
+                        
+                        resultsBox.appendChild(link);
+                    });
+                } else {
+                    resultsBox.innerHTML = '<div class="list-group-item text-muted">No student found</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                resultsBox.innerHTML = '<div class="list-group-item text-danger">Search failed</div>';
+            });
+    }
+
+    searchInput.addEventListener('keyup', function() {
+        const query = this.value.trim();
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            performSearch(query);
+        }, 300);
+    });
+
+    document.addEventListener('click', function(e) {
+        if (searchInput && resultsBox && 
+            !searchInput.contains(e.target) && 
+            !resultsBox.contains(e.target)) {
+            resultsBox.style.display = 'none';
         }
     });
 });
