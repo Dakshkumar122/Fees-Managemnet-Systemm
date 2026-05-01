@@ -187,10 +187,11 @@ def search_student_default_ids(request):
 
 
 
+
 def collect_fees(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    # Redirect to fees page with student_id as a query parameter
-    return redirect(f'/fees/?q={student.Student_id}')
+    # Redirect to root URL with student_id as a query parameter
+    return redirect(f'/?q={student.Student_id}')
 
 
 
