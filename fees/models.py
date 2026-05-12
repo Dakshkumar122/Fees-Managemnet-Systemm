@@ -48,7 +48,12 @@ class Student(models.Model):
     course_name=models.CharField(max_length=50,choices=COURSE_NAME)
     course_fees=models.CharField()
     installment_no=models.CharField(max_length=12)
-    student_img=models.ImageField(upload_to='student_photo/')
+    # student_img=models.ImageField(upload_to='student_photo/')
+    student_img=models.ImageField(
+    upload_to='student_photo/',
+    blank=True,
+    null=True
+)
 
 
 
