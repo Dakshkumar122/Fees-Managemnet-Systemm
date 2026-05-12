@@ -41,9 +41,18 @@
         <div class="card shadow-sm mb-4">
             <div class="card-body">
                 <div class="row g-4">
+                
+
+                    <!-- agr compalsory nahi hai image lena toh yeh -->
                     <div class="col-md-3 text-center">
+
+                        {% if student.student_img %}
                         <img src="{{ student.student_img.url }}" alt="Student Photo" class="student-photo"
                             style="filter: blur(5px);">
+                        {% else %}
+                        <p>No Image Available</p>
+                        {% endif %}
+
                     </div>
                     <div class="col-md-4">
                         <p><span class="info-label">Student ID:</span> {{ student.Student_id }}</p>
