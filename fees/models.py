@@ -1,6 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 # Create your models here.
 
@@ -87,3 +88,10 @@ class Installment(models.Model):
         return f"{self.student.Student_id} - Installment {self.installment_no}"
 
 # Automatically create first installment when a Student is created
+
+
+
+
+
+    class Neon(models.model):
+        timestamp = models.DateTimeField(auto_now_add=True)

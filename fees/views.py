@@ -224,4 +224,7 @@ def delete_installment(request):
         installment.delete()
 
         return JsonResponse({"status": "success", "message": "Installment deleted"})
+    
+
+
 
