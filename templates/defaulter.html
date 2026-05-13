@@ -3,166 +3,554 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <title>Collect Fees</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Collect Fees</title>
 </head>
 <style>
-    body {
-        background-color: #f7f7f7;
-    }
-   .student-img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border: 2px solid #ddd;
-        border-radius: 4px; /* rectangle with slight rounding */
-    }
-    .table-custom th {
-        background-color: #343a40;
-        color: white;
-        text-align: center;
-    }
-    .table-custom td {
-        vertical-align: middle;
-        text-align: center;
-    }
-    .btn-action {
-        padding: 5px 10px;
-        font-size: 14px;
-    }
-     h1.responsive-title {
-    font-size: 2.5rem; /* large desktop size */
-  }
+    /* ========== ADVANCED MODERN CSS FOR FEE DEFAULTER PAGE ========== */
+    /* Premium Glassmorphism + High Contrast Text */
 
-  @media (max-width: 576px) {
-    h1.responsive-title {
-      font-size: 1.75rem; /* smaller on mobile */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
-  }
+
+    body {
+        background: linear-gradient(145deg, #f5f7fa 0%, #e9ecef 100%);
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    /* Top Navigation */
+    .top-text {
+        padding: 30px 30px 20px 30px;
+    }
+
+    .top-text a {
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        color: #0d6efd;
+        background: #e3f2fd;
+        padding: 8px 20px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .top-text a:hover {
+        background: #0d6efd;
+        color: white;
+        transform: translateX(-3px);
+    }
+
+    /* Title */
+    .top-text h1 {
+        background: linear-gradient(135deg, #0d6efd, #0099ff, #0d6efd);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 800;
+        font-size: 2.5rem;
+        letter-spacing: -0.5px;
+        margin: 0;
+    }
+
+    /* Message Container */
+    #message-container {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1100;
+        width: auto;
+        min-width: 300px;
+        max-width: 90%;
+        animation: slideDown 0.5s ease;
+    }
+
+    .alert {
+        border-radius: 12px !important;
+        border: none !important;
+        font-weight: 500;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-success {
+        background: #d4edda !important;
+        color: #155724 !important;
+        border-left: 4px solid #28a745 !important;
+    }
+
+    .alert-error {
+        background: #f8d7da !important;
+        color: #721c24 !important;
+        border-left: 4px solid #dc3545 !important;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+
+    /* Container */
+    .container {
+        position: relative;
+        z-index: 1;
+        padding: 1rem;
+    }
+
+    /* Search Section */
+    .d-flex {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    #student-search {
+        border: 2px solid #e9ecef;
+        border-radius: 50px;
+        padding: 12px 20px;
+        color: #2c3e50;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        background: white;
+    }
+
+    #student-search:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+
+    #student-search::placeholder {
+        color: #adb5bd;
+    }
+
+    /* Search Button */
+    .btn-success {
+        background: linear-gradient(135deg, #28a745, #218838);
+        border: none;
+        border-radius: 50px;
+        padding: 12px 28px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        background: linear-gradient(135deg, #218838, #28a745);
+    }
+
+    /* Search Results */
+    #search-results {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #e9ecef;
+        margin-top: 55px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    #search-results .list-group-item {
+        background: white;
+        color: #2c3e50;
+        border: none;
+        border-bottom: 1px solid #e9ecef;
+        padding: 12px 20px;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: block;
+    }
+
+    #search-results .list-group-item:hover {
+        background: #e3f2fd;
+        color: #0d6efd;
+        padding-left: 28px;
+    }
+
+    /* Table Styling */
+    .table-responsive {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .table {
+        margin-bottom: 0;
+        background: white;
+    }
+
+    .table thead th {
+        background: #0d6efd;
+        color: white;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 1rem;
+        border-bottom: none;
+    }
+
+    .table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .table tbody tr:hover {
+        background: #f8f9fa !important;
+    }
+
+    .table tbody tr td {
+        padding: 1rem;
+        vertical-align: middle;
+        font-weight: 500;
+        color: #2c3e50 !important;
+        background: white;
+    }
+
+    /* Table Images */
+    .table td img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #0d6efd;
+        transition: all 0.3s;
+        filter: blur(5px);
+    }
+
+    .table td img:hover {
+        transform: scale(1.3);
+        filter: blur(0px);
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Pending Amount Badge */
+    .table td strong {
+        background: #dc3545;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.75rem;
+        display: inline-block;
+        color: white;
+        font-weight: 600;
+    }
+
+    /* Action Buttons */
+    .btn-info {
+        background: #0d6efd;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-weight: 600;
+        font-size: 0.7rem;
+        transition: all 0.2s;
+        color: white;
+    }
+
+    .btn-info:hover {
+        background: #0a58ca;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(13, 110, 253, 0.3);
+        color: white;
+    }
+
+    .btn-success.small {
+        background: linear-gradient(135deg, #28a745, #218838);
+        border: none;
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-weight: 600;
+        font-size: 0.7rem;
+        transition: all 0.2s;
+        color: white;
+    }
+
+    .btn-success.small:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Empty State */
+    .text-center {
+        padding: 2rem !important;
+        color: #6c757d !important;
+        font-weight: 500;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #0d6efd;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #0a58ca;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .top-text {
+            padding: 20px;
+            flex-direction: column;
+            text-align: center;
+            gap: 15px;
+        }
+
+        .top-text h1 {
+            font-size: 1.8rem;
+        }
+
+        .d-flex {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        #student-search {
+            max-width: 100% !important;
+            border-radius: 50px;
+        }
+
+        .btn-success {
+            width: 100%;
+        }
+
+        .table-responsive {
+            border-radius: 16px;
+        }
+
+        .table thead th {
+            font-size: 0.7rem;
+            padding: 0.6rem;
+        }
+
+        .table tbody tr td {
+            padding: 0.6rem;
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .top-text h1 {
+            font-size: 1.5rem;
+        }
+
+        .table td strong {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+        }
+
+        .btn-info,
+        .btn-success.small {
+            padding: 4px 8px;
+            font-size: 0.6rem;
+        }
+    }
+
+    /* Focus Outline */
+    *:focus-visible {
+        outline: 2px solid #0d6efd;
+        outline-offset: 2px;
+        border-radius: 8px;
+    }
+
+    /* Row Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .table tbody tr {
+        animation: fadeInUp 0.3s ease forwards;
+        opacity: 0;
+        animation-delay: calc(var(--order, 0) * 0.05s);
+    }
+
+    .table tbody tr:nth-child(1) {
+        --order: 1;
+    }
+
+    .table tbody tr:nth-child(2) {
+        --order: 2;
+    }
+
+    .table tbody tr:nth-child(3) {
+        --order: 3;
+    }
+
+    .table tbody tr:nth-child(4) {
+        --order: 4;
+    }
+
+    .table tbody tr:nth-child(5) {
+        --order: 5;
+    }
 </style>
 
 <body>
-     <div class="d-flex justify-content-between align-items-center top-text" style="padding: 50px 30px 20px 30px;">
-  <span>
-    <a href="{% url 'fees' %}" class="nav-link p-0">Collect Fees</a>
-  </span>
-  <h1 class="m-0 mx-auto text-center fs-1 fs-sm-3">Fee Defaulter</h1>
-</div>
-    
+    <div class="d-flex justify-content-between align-items-center top-text" style="padding: 50px 30px 20px 30px;">
+        <span>
+            <a href="{% url 'fees' %}" class="nav-link p-0">Collect Fees</a>
+        </span>
+        <h1 class="m-0 mx-auto text-center fs-1 fs-sm-3">Fee Defaulter</h1>
+    </div>
 
-    
+
+
     <div id="message-container" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1100; display: none;">
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show m-0 rounded-0" role="alert" style="text-align:center;">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show m-0 rounded-0" role="alert"
+            style="text-align:center;">
             {{ message }}
             <button type="button" class="btn-close" aria-label="Close" onclick="hideMessage()"></button>
         </div>
         {% endfor %}
-        
-        
+
+
     </div>
-   <div class="container mt-4">
+    <div class="container mt-4">
 
-    <!-- Search -->
-    <div style="position: relative;">
-        <form method="GET" class="d-flex">
-            <input type="text" id="student-search" placeholder="Search by Student ID..."
-                   class="form-control" style="max-width: 300px;" autocomplete="off">
-            <button type="submit" class="btn btn-success"> Search</button>
-            <div id="search-results" class="list-group"
-                 style="position: absolute; top: 38px; width: 300px; z-index: 1000;"></div>
-        </form>
+        <!-- Search -->
+        <div style="position: relative;">
+            <form method="GET" class="d-flex">
+                <input type="text" id="student-search" placeholder="Search by Student ID..." class="form-control"
+                    style="max-width: 300px;" autocomplete="off">
+                <button type="submit" class="btn btn-success"> Search</button>
+                <div id="search-results" class="list-group"
+                    style="position: absolute; top: 38px; width: 300px; z-index: 1000;"></div>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover mt-3">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Student Name</th>
+                        <!-- Hidden on mobile -->
+                        <th class="d-none d-md-table-cell">Course Name</th>
+                        <th class="d-none d-md-table-cell">Course Fees</th>
+                        <th class="d-none d-md-table-cell">First Fees Date</th>
+                        <th>Pending Installments</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in defaulters %}
+                    <tr style="background-color: {{ entry.color }}">
+                        <td>
+                            {% if entry.student.student_img %}
+                            <img src="{{ entry.student.student_img.url }}"
+                                style="width:50px;height:50px;filter: blur(5px);">
+                            {% else %} No Photo {% endif %}
+                        </td>
+                        <td>{{ entry.student.student_name }}</td>
+                        <!-- Hidden on mobile -->
+                        <td class="d-none d-md-table-cell">{{ entry.student.get_course_name_display }}</td>
+                        <td class="d-none d-md-table-cell">₹{{ entry.student.course_fees }}</td>
+                        <td class="d-none d-md-table-cell">{{ entry.student.fees_date|date:"d-m-Y" }}</td>
+                        <td><strong>{{ entry.pending }}</strong> month(s)</td>
+                        <td>
+                            <!-- Desktop Buttons -->
+                            <div class="d-none d-md-block">
+                                <a href="{% url 'student_detail' entry.student.pk %}" class="btn btn-info btn-sm">View
+                                    Details</a>
+                                <a href="{% url 'collect_fees' entry.student.pk %}"
+                                    class="btn btn-success btn-sm">Collect Fees</a>
+                            </div>
+                            <!-- Mobile Buttons -->
+                            <div class="d-flex gap-1 d-md-none">
+                                <a href="{% url 'student_detail' entry.student.pk %}" class="btn btn-info btn-sm"
+                                    style="font-size: 12px; padding: 4px 6px;">View</a>
+                                <a href="{% url 'collect_fees' entry.student.pk %}" class="btn btn-success btn-sm"
+                                    style="font-size: 12px; padding: 4px 6px;">Fees</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No defaulters found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover mt-3">
-            <thead>
-                <tr>
-                    <th>Photo</th>
-                    <th>Student Name</th>
-                    <!-- Hidden on mobile -->
-                    <th class="d-none d-md-table-cell">Course Name</th>
-                    <th class="d-none d-md-table-cell">Course Fees</th>
-                    <th class="d-none d-md-table-cell">First Fees Date</th>
-                    <th>Pending Installments</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in defaulters %}
-                <tr style="background-color: {{ entry.color }}">
-                    <td>
-                        {% if entry.student.student_img %}
-                            <img src="{{ entry.student.student_img.url }}" style="width:50px;height:50px;filter: blur(5px);">
-                        {% else %} No Photo {% endif %}
-                    </td>
-                    <td>{{ entry.student.student_name }}</td>
-                    <!-- Hidden on mobile -->
-                    <td class="d-none d-md-table-cell">{{ entry.student.get_course_name_display }}</td>
-                    <td class="d-none d-md-table-cell">₹{{ entry.student.course_fees }}</td>
-                    <td class="d-none d-md-table-cell">{{ entry.student.fees_date|date:"d-m-Y" }}</td>
-                    <td><strong>{{ entry.pending }}</strong> month(s)</td>
-                    <td>
-                        <!-- Desktop Buttons -->
-                        <div class="d-none d-md-block">
-                            <a href="{% url 'student_detail' entry.student.pk %}" class="btn btn-info btn-sm">View Details</a>
-                            <a href="{% url 'collect_fees' entry.student.pk %}" class="btn btn-success btn-sm">Collect Fees</a>
-                        </div>
-                        <!-- Mobile Buttons -->
-                        <div class="d-flex gap-1 d-md-none">
-                            <a href="{% url 'student_detail' entry.student.pk %}" class="btn btn-info btn-sm" style="font-size: 12px; padding: 4px 6px;">View</a>
-                            <a href="{% url 'collect_fees' entry.student.pk %}" class="btn btn-success btn-sm" style="font-size: 12px; padding: 4px 6px;">Fees</a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" class="text-center">No defaulters found</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
 
 
 
 
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('student-search');
+            const resultsBox = document.getElementById('search-results');
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('student-search');
-    const resultsBox = document.getElementById('search-results');
-
-    searchInput.addEventListener('keyup', function () {
-        const query = this.value.trim();
-        if (query.length > 0) {
-            fetch(`/search-student-default-ids/?q=${query}`)
-                .then(res => res.json())
-                .then(data => {
-                    resultsBox.innerHTML = '';
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            const link = document.createElement('a');
-                            link.href = `/fees-defaulter-list/?q=${item.Student_id}`;
-                            link.textContent = `${item.Student_id} - ${item.name}`;
-                            link.classList.add('list-group-item', 'list-group-item-action');
-                            resultsBox.appendChild(link);
+            searchInput.addEventListener('keyup', function () {
+                const query = this.value.trim();
+                if (query.length > 0) {
+                    fetch(`/search-student-default-ids/?q=${query}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            resultsBox.innerHTML = '';
+                            if (data.length > 0) {
+                                data.forEach(item => {
+                                    const link = document.createElement('a');
+                                    link.href = `/fees-defaulter-list/?q=${item.Student_id}`;
+                                    link.textContent = `${item.Student_id} - ${item.name}`;
+                                    link.classList.add('list-group-item', 'list-group-item-action');
+                                    resultsBox.appendChild(link);
+                                });
+                            } else {
+                                resultsBox.innerHTML = `<div class="list-group-item">No matches found</div>`;
+                            }
                         });
-                    } else {
-                        resultsBox.innerHTML = `<div class="list-group-item">No matches found</div>`;
-                    }
-                });
-        } else {
-            resultsBox.innerHTML = '';
-        }
-    });
-});
-</script>
+                } else {
+                    resultsBox.innerHTML = '';
+                }
+            });
+        });
+    </script>
 
 
 

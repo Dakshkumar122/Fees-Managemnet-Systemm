@@ -10,197 +10,551 @@
   <title>Collect Fees</title>
 </head>
 <style>
-  body {
-    background-color: #f7f7f7;
+  /* ========== ADVANCED MODERN CSS FOR COLLECT FEES PAGE ========== */
+  /* Premium Glassmorphism + High Contrast Text */
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
+  body {
+    background: linear-gradient(145deg, #f5f7fa 0%, #e9ecef 100%);
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Container Styling */
+  .container {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 1rem;
+  }
+
+  /* Form Container - Light Theme */
   .form-container {
     background: white;
-    padding: 30px;
-    margin-top: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-   h1.responsive-title {
-    font-size: 2.5rem; /* large desktop size */
+    border-radius: 24px;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
   }
 
-  @media (max-width: 576px) {
-    h1.responsive-title {
-      font-size: 1.75rem; /* smaller on mobile */
+  .form-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Top Navigation */
+  .top-text {
+    padding: 30px 30px 20px 30px;
+    background: transparent;
+  }
+
+  .top-text a {
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: #0d6efd;
+    background: #e3f2fd;
+    padding: 8px 20px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .top-text a:hover {
+    background: #0d6efd;
+    color: white;
+    transform: translateX(-3px);
+  }
+
+  /* Title Styling */
+  .top-text h1,
+  h1.responsive-title {
+    background: linear-gradient(135deg, #0d6efd, #0099ff, #0d6efd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    font-size: 2.5rem;
+    letter-spacing: -0.5px;
+    margin: 0;
+  }
+
+  /* Form Labels */
+  .form-container label {
+    font-weight: 700;
+    color: #0d6efd;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  /* Input Fields */
+  .form-container input:not([type="file"]),
+  .form-container select,
+  .form-container textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    color: #2c3e50;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  .form-container input:not([type="file"]):focus,
+  .form-container select:focus,
+  .form-container textarea:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+  }
+
+  /* File Input */
+  .form-container input[type="file"] {
+    padding: 0.5rem;
+    border: 2px dashed #0d6efd;
+    border-radius: 12px;
+    background: #f8f9fa;
+  }
+
+  .form-container input[type="file"]::file-selector-button {
+    background: #0d6efd;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: white;
+    margin-right: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .form-container input[type="file"]::file-selector-button:hover {
+    background: #0a58ca;
+  }
+
+  /* Submit Button */
+  .btn-primary {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    text-transform: uppercase;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0a58ca, #0d6efd);
+  }
+
+  /* Clear Button */
+  #clear-btn {
+    background: transparent;
+    color: #e74c3c;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 40px;
+    transition: all 0.3s;
+    display: inline-block;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-left: 20px;
+    text-decoration: none;
+  }
+
+  #clear-btn:hover {
+    background: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+    transform: translateX(3px);
+  }
+
+  /* Search Container */
+  #search-container {
+    position: relative;
+    z-index: 100;
+  }
+
+  #sticky-search {
+    background: white;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  #sticky-search .form-control {
+    background: white !important;
+    color: #2c3e50 !important;
+    font-weight: 500;
+    padding: 0.85rem 1.5rem;
+    border: none;
+  }
+
+  #sticky-search .form-control::placeholder {
+    color: #adb5bd;
+  }
+
+  #sticky-search .btn-primary {
+    border-radius: 0 50px 50px 0;
+    padding: 0 2rem;
+  }
+
+  /* Search Results */
+  #search-results {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e9ecef;
+    margin-top: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  #search-results .list-group-item {
+    background: white;
+    color: #2c3e50;
+    border: none;
+    border-bottom: 1px solid #e9ecef;
+    padding: 12px 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  #search-results .list-group-item:hover {
+    background: #e3f2fd;
+    color: #0d6efd;
+    padding-left: 28px;
+  }
+
+  /* Alert Messages */
+  .alert {
+    border-radius: 12px !important;
+    margin: 1rem auto;
+    animation: slideDown 0.3s ease;
+    border: none !important;
+  }
+
+  .alert-success {
+    background: #d4edda !important;
+    color: #155724 !important;
+    border-left: 4px solid #28a745 !important;
+  }
+
+  .alert-error {
+    background: #f8d7da !important;
+    color: #721c24 !important;
+    border-left: 4px solid #dc3545 !important;
+  }
+
+  .alert-warning {
+    background: #fff3cd !important;
+    color: #856404 !important;
+    border-left: 4px solid #ffc107 !important;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
     }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Age Badge */
+  #age {
+    
+    padding: 2px 10px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-left: 8px;
+    color: white;
+    display: inline-block;
+  }
+
+  /* Required Star */
+  span[style="color: red;"] {
+    color: #dc3545 !important;
+    font-weight: 700;
+  }
+
+  /* Error Messages */
+  .text-danger {
+    color: #dc3545 !important;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+
+  /* Sticky Search Bar */
+  #search-container.fixed-top {
+    background: white !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 0 !important;
+    z-index: 1030;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0d6efd;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0a58ca;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 1.25rem;
+      margin: 1rem;
+    }
+
+    .top-text {
+      padding: 20px;
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+    }
+
+    .top-text h1 {
+      font-size: 1.8rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+
+    #clear-btn {
+      margin-left: 0;
+      margin-top: 12px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .text-center.mt-4 {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .top-text h1 {
+      font-size: 1.5rem;
+    }
+
+    .form-container label {
+      font-size: 0.65rem;
+    }
+  }
+
+  /* Focus Outline */
+  *:focus-visible {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+    border-radius: 8px;
   }
 </style>
 
 <body>
-   <div class="d-flex justify-content-between align-items-center top-text" style="padding: 50px 30px 20px 30px;">
-  <span>
-    <a href="{% url 'defaulter' %}" class="nav-link p-0">Fee Defaulter</a>
-  </span>
-  <h1 class="m-0 mx-auto text-center fs-1 fs-sm-3">Collect Fees</h1>
-</div>
+  <div class="d-flex justify-content-between align-items-center top-text" style="padding: 50px 30px 20px 30px;">
+    <span>
+      <a href="{% url 'defaulter' %}" class="nav-link p-0">Fee Defaulter</a>
+    </span>
+    <h1 class="m-0 mx-auto text-center fs-1 fs-sm-3">Collect Fees</h1>
+  </div>
 
- {% if messages %}
-    <div style="margin-top: 10px;">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg rounded-3 border-0"
-                 style="background: {% if message.tags == 'error' %}#ffdddd{% elif message.tags == 'success' %}#ddffdd{% elif message.tags == 'warning' %}#fff4d1{% else %}#dceaff{% endif %};
+  {% if messages %}
+  <div style="margin-top: 10px;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg rounded-3 border-0"
+      style="background: {% if message.tags == 'error' %}#ffdddd{% elif message.tags == 'success' %}#ddffdd{% elif message.tags == 'warning' %}#fff4d1{% else %}#dceaff{% endif %};
                         color: #333; padding: 12px 18px; font-size: 15px; display: flex; align-items: center; gap: 10px;">
 
-                {% if message.tags == 'error' %}
-                    <i class="bi bi-x-circle-fill" style="color:red; font-size: 18px; text-align: center;"></i>
-                {% elif message.tags == 'success' %}
-                    <i class="bi bi-check-circle-fill" style="color: #28a745; font-size: 18px;"></i>
-                {% elif message.tags == 'warning' %}
-                    <i class="bi bi-exclamation-triangle-fill" style="color: #ffc107; font-size: 18px;"></i>
-                {% else %}
-                    <i class="bi bi-info-circle-fill" style="color: #0d6efd; font-size: 18px;"></i>
-                {% endif %}
+      {% if message.tags == 'error' %}
+      <i class="bi bi-x-circle-fill" style="color:red; font-size: 18px; text-align: center;"></i>
+      {% elif message.tags == 'success' %}
+      <i class="bi bi-check-circle-fill" style="color: #28a745; font-size: 18px;"></i>
+      {% elif message.tags == 'warning' %}
+      <i class="bi bi-exclamation-triangle-fill" style="color: #ffc107; font-size: 18px;"></i>
+      {% else %}
+      <i class="bi bi-info-circle-fill" style="color: #0d6efd; font-size: 18px;"></i>
+      {% endif %}
 
-                <span style="flex: 1;">{{ message }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
+      <span style="flex: 1;">{{ message }}</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-{% endif %}
-</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  </div>
 
 
   <div class="container my-lg-4 my-md-3" id="search-container">
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-sm-10 col-12">
-      <form id="sticky-search" 
-        method="GET" 
-        class="d-flex shadow rounded-pill overflow-hidden" 
-        role="search" onsubmit="return false;">
-        <input class="form-control border-0 rounded-start-pill px-4 py-2"
-          style="background-color: rgba(50, 205, 184, 0.1);" 
-          type="search" placeholder="Search Students By Id"
-          aria-label="Search" name="q" id="student-search">
-        <button class="btn btn-primary px-4 rounded-end-pill" type="submit"
-          style="background-color: rgb(51, 161, 51); font-weight: bold;">
-          Search
-        </button>
-      </form>
-      <ul id="search-results" 
-        class="list-group position-absolute" 
-        style="z-index:1000; display:none; width: 300px;"></ul>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-sm-10 col-12">
+        <form id="sticky-search" method="GET" class="d-flex shadow rounded-pill overflow-hidden" role="search"
+          onsubmit="return false;">
+          <input class="form-control border-0 rounded-start-pill px-4 py-2"
+            style="background-color: rgba(50, 205, 184, 0.1);" type="search" placeholder="Search Students By Id"
+            aria-label="Search" name="q" id="student-search">
+          <button class="btn btn-primary px-4 rounded-end-pill" type="submit"
+            style="background-color: rgb(51, 161, 51); font-weight: bold;">
+            Search
+          </button>
+        </form>
+        <ul id="search-results" class="list-group position-absolute" style="z-index:1000; display:none; width: 300px;">
+        </ul>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Dummy content for scroll -->
+  <!-- Dummy content for scroll -->
 
 
   <div class="container">
     <div class="form-container">
-     <form method="POST" enctype="multipart/form-data" id="student-form">
-    {% csrf_token %}
-    <!-- Hidden field for update -->
-    <input type="hidden" name="student_id" id="student_id">
+      <form method="POST" enctype="multipart/form-data" id="student-form">
+        {% csrf_token %}
+        <!-- Hidden field for update -->
+        <input type="hidden" name="student_id" id="student_id">
 
-    <div class="row g-3">
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.student_name.label_tag }} <span style="color: red;">*</span>
             {{ form.student_name }}
             {% for error in form.student_name.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.father_name.label_tag }}
             {{ form.father_name }}
             {% for error in form.father_name.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             <label for="{{ form.dob.id_for_label }}">
-                {{ form.dob.label }} 
-                <span style="color: red;">Age :</span> 
-                <span id="age" style="color:green;"></span>
+              {{ form.dob.label }}
+              <span style="color: red;">Age :</span>
+              <span id="age" style="color:green;"></span>
             </label>
             {{ form.dob }}
             {% for error in form.dob.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.email.label_tag }}
             {{ form.email }}
             {% for error in form.email.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.phone_number.label_tag }}
             {{ form.phone_number }}
             {% for error in form.phone_number.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.Student_id.label_tag }}
             {{ form.Student_id }}
             {% for error in form.Student_id.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.fees_date.label_tag }}
             {{ form.fees_date }}
             {% for error in form.fees_date.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.course_name.label_tag }}
             {{ form.course_name }}
             {% for error in form.course_name.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.course_fees.label_tag }}
             {{ form.course_fees }}
             {% for error in form.course_fees.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.installment_no.label_tag }}
             {{ form.installment_no }}
             {% for error in form.installment_no.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
-        </div>
+          </div>
 
-        <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-12 col-md-6 col-lg-4">
             {{ form.student_img.label_tag }}
             {{ form.student_img }}
             {% for error in form.student_img.errors %}
-                <div class="text-danger small">{{ error }}</div>
+            <div class="text-danger small">{{ error }}</div>
             {% endfor %}
             <span id="img-error" style="color: red; display: none; margin-left: 5px;">
-                Please select the profile image for the first installment.
+              Please select the profile image for the first installment.
             </span>
+          </div>
         </div>
-    </div>
 
-    <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary px-5">Submit</button>
-         <a  id="clear-btn" style="margin-left: 40px; cursor: pointer; color: blue; font-weight: bold;">Clear All </a>
-    </div>
-</form>
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary px-5">Submit</button>
+          <a id="clear-btn" style="margin-left: 40px; cursor: pointer; color: blue; font-weight: bold;">Clear All </a>
+        </div>
+      </form>
 
     </div>
 
@@ -209,56 +563,56 @@
     <script src="{% static 'js/app.js' %}"></script>
 
 
-        <script>document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('student-search');
+    <script>document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('student-search');
 
-    // Function to get query parameter by name from URL
-    function getQueryParam(name) {
-        const params = new URLSearchParams(window.location.search);
-        return params.get(name);
-    }
+        // Function to get query parameter by name from URL
+        function getQueryParam(name) {
+          const params = new URLSearchParams(window.location.search);
+          return params.get(name);
+        }
 
-    // Set input value from ?q= in URL
-    const q = getQueryParam('q');
-    if (q) {
-        searchInput.value = q;
+        // Set input value from ?q= in URL
+        const q = getQueryParam('q');
+        if (q) {
+          searchInput.value = q;
 
-        // Optionally trigger your existing search/autofill function here:
-        // For example, trigger 'keyup' event or call your search function manually.
-        const event = new Event('keyup');
-        searchInput.dispatchEvent(event);
-    }
-});
-
-
+          // Optionally trigger your existing search/autofill function here:
+          // For example, trigger 'keyup' event or call your search function manually.
+          const event = new Event('keyup');
+          searchInput.dispatchEvent(event);
+        }
+      });
 
 
 
 
-// =========fixed search bar ============== 
-  document.addEventListener("DOMContentLoaded", function () {
-    const searchForm = document.getElementById("sticky-search");
-    const searchContainer = document.getElementById("search-container");
 
-    // Placeholder div to prevent layout jump when fixed
-    const placeholder = document.createElement("div");
-    placeholder.style.height = searchContainer.offsetHeight + "px";
-    placeholder.style.display = "none";
-    searchContainer.parentNode.insertBefore(placeholder, searchContainer);
 
-    const stickyPoint = searchContainer.offsetTop;
+      // =========fixed search bar ============== 
+      document.addEventListener("DOMContentLoaded", function () {
+        const searchForm = document.getElementById("sticky-search");
+        const searchContainer = document.getElementById("search-container");
 
-    window.addEventListener("scroll", function () {
-      if (window.scrollY > stickyPoint) {
-        searchContainer.classList.add("fixed-top","bg-white","shadow","py-4");
-        placeholder.style.display = "block"; // show placeholder
-      } else {
-        searchContainer.classList.remove("fixed-top", "bg-white", "shadow","py-4");
-        placeholder.style.display = "none"; // hide placeholder
-      }
-    });
-  });
-</script>
+        // Placeholder div to prevent layout jump when fixed
+        const placeholder = document.createElement("div");
+        placeholder.style.height = searchContainer.offsetHeight + "px";
+        placeholder.style.display = "none";
+        searchContainer.parentNode.insertBefore(placeholder, searchContainer);
+
+        const stickyPoint = searchContainer.offsetTop;
+
+        window.addEventListener("scroll", function () {
+          if (window.scrollY > stickyPoint) {
+            searchContainer.classList.add("fixed-top", "bg-white", "shadow", "py-4");
+            placeholder.style.display = "block"; // show placeholder
+          } else {
+            searchContainer.classList.remove("fixed-top", "bg-white", "shadow", "py-4");
+            placeholder.style.display = "none"; // hide placeholder
+          }
+        });
+      });
+    </script>
 
 
 
