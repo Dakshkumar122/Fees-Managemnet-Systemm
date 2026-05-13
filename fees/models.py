@@ -1,7 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.utils import timezone
 
 # Create your models here.
 
@@ -12,14 +11,7 @@ class Student(models.Model):
         ('wd','Web Development'),
         ('olevel','O Level'),
         ('adca','ADCA'),
-        ('dca','dca'),
-        ('dtp', 'DTP'),
-        ('dcfa','dcfa'),
-        ('ccc','ccc'),
-        ('excel','excel'),
-        ('tally','tally'),
-        ('word','word'),
-        ('typing','typing'),
+        ('dca','DCA')
     ]
 
 
@@ -28,14 +20,7 @@ class Student(models.Model):
         'wd': 3000,
         'olevel': 1200,
         'adca':500,
-        'dca':500,
-        'dtp':500,
-        'dcfa':500,
-        'ccc':800,
-        'excel':1000,
-        'tally':1000,
-        'word':1000,
-        'typing':400,
+        'dca':500
     }
 
     student_name=models.CharField(max_length=100)
@@ -49,8 +34,7 @@ class Student(models.Model):
     course_name=models.CharField(max_length=50,choices=COURSE_NAME)
     course_fees=models.CharField()
     installment_no=models.CharField(max_length=12)
-    # student_img=models.ImageField(upload_to='student_photo/')
-    student_img=models.ImageField(upload_to='student_photo/', blank=True, null=True)
+    student_img=models.ImageField(upload_to='student_photo/')
 
 
 
@@ -88,10 +72,3 @@ class Installment(models.Model):
         return f"{self.student.Student_id} - Installment {self.installment_no}"
 
 # Automatically create first installment when a Student is created
-
-
-
-
-
-    class Neon(models.model):
-        timestamp = models.DateTimeField(auto_now_add=True)

@@ -1,33 +1,33 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const dobInput = document.getElementById('id_dob');
-    const ageLabel = document.getElementById('age');
+ document.addEventListener("DOMContentLoaded", function () {
+        const dobInput = document.getElementById('id_dob');
+        const ageLabel = document.getElementById('age');
 
-    dobInput.addEventListener('change', function () {
-        const dobValue = this.value;
-        if (!dobValue) return;
+        dobInput.addEventListener('change', function () {
+            const dobValue = this.value;
+            if (!dobValue) return;
 
-        const dob = new Date(dobValue);
-        const today = new Date();
+            const dob = new Date(dobValue);
+            const today = new Date();
 
-        let years = today.getFullYear() - dob.getFullYear();
-        let months = today.getMonth() - dob.getMonth();
-        let days = today.getDate() - dob.getDate();
+            let years = today.getFullYear() - dob.getFullYear();
+            let months = today.getMonth() - dob.getMonth();
+            let days = today.getDate() - dob.getDate();
 
-        if (days < 0) {
-            months -= 1;
-            days += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); // last day of previous month
-        }
+            if (days < 0) {
+                months -= 1;
+                days += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); // last day of previous month
+            }
 
-        if (months < 0) {
-            years -= 1;
-            months += 12;
-        }
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
 
-        age.textContent = `${years} years, ${months} months, ${days} days`;
+            age.textContent = `${years} years, ${months} months, ${days} days`;
+        });
     });
-});
 
-$(document).ready(function () {
+$(document).ready(function() {
     function generateStudentID() {
         var name = $('#id_student_name').val().trim();
         var phone = $('#id_phone_number').val().trim();
@@ -49,27 +49,20 @@ $(document).ready(function () {
     $('#id_student_name, #id_phone_number').on('input', generateStudentID);
 
 
-    // ============
+// ============
 
     const courseFees = {
-        'python': '12000',
-        'wd': '3000',
-        'olevel': '1200',
-        'adca': '500',
-        'dca': '500',
-        'DTP': '500',
-        'dcfa': '500',
-        'ccc': '800',
-        'excel': '1000',
-        'tally': '1000',
-        'word': '1000',
-        'typing':'400',
+      'python': '12000',
+      'wd': '3000',
+      'olevel': '1200',
+      'adca': '500',
+      'dca': '500'
     };
 
     function updateFees() {
-        const selectedCourse = $('#id_course_name').val();
-        const fee = courseFees[selectedCourse] || '';
-        $('#id_course_fees').val(fee);
+      const selectedCourse = $('#id_course_name').val();
+      const fee = courseFees[selectedCourse] || '';
+      $('#id_course_fees').val(fee);
     }
 
     // Update on course change
@@ -83,13 +76,13 @@ $(document).ready(function () {
 
 
 
-    // =============
+// =============
     const studentId = $("#student_id").val();
 
     if (studentId) {
-        $.get("/ajax/installment/" + studentId + "/", function (data) {
-            $("#id_installment_no").val(data.installment_no + 1);
-        });
+      $.get("/ajax/installment/" + studentId + "/", function (data) {
+        $("#id_installment_no").val(data.installment_no+1);
+      });
     }
 
 
@@ -99,7 +92,7 @@ $(document).ready(function () {
 
 
 
-
+    
 
 });
 
@@ -205,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const errorSpan = document.getElementById('img-error');
 
     function toggleImageRequired() {
-        if (installmentInput.value === 1) {
+        if (installmentInput.value ===1) {
             imageInput.required = true;
         } else {
             imageInput.required = false;
@@ -243,77 +236,73 @@ document.addEventListener('DOMContentLoaded', function () {
 // ===============================Error message 
 
 document.getElementById('clear-btn').addEventListener('click', function () {
-    const form = document.getElementById('student-form') || document.querySelector('form');
-    if (!form) return;
+  const form = document.getElementById('student-form') || document.querySelector('form');
+  if (!form) return;
 
-    // Preserve hidden fields if needed
-    const preserveHidden = ['student_id'];
-    const preservedValues = {};
-    preserveHidden.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) preservedValues[id] = el.value;
-    });
+  // Preserve hidden fields if needed
+  const preserveHidden = ['student_id'];
+  const preservedValues = {};
+  preserveHidden.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) preservedValues[id] = el.value;
+  });
 
-    // Reset the form
-    form.reset();
+  // Reset the form
+  form.reset();
 
-    // Clear file inputs and previews
-    form.querySelectorAll('input[type="file"]').forEach(input => {
-        input.value = '';
-        const preview = document.getElementById(input.id + '-preview');
-        if (preview) preview.src = '';
-    });
+  // Clear file inputs and previews
+  form.querySelectorAll('input[type="file"]').forEach(input => {
+    input.value = '';
+    const preview = document.getElementById(input.id + '-preview');
+    if (preview) preview.src = '';
+  });
 
-    // Clear checkboxes and radios
-    form.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(ch => ch.checked = false);
+  // Clear checkboxes and radios
+  form.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(ch => ch.checked = false);
 
-    // Clear custom spans (like age display)
-    const ageSpan = document.getElementById('age');
-    if (ageSpan) ageSpan.textContent = '';
+  // Clear custom spans (like age display)
+  const ageSpan = document.getElementById('age');
+  if (ageSpan) ageSpan.textContent = '';
 
-    // Hide inline validation messages
-    form.querySelectorAll('.text-danger.small').forEach(el => {
-        el.textContent = '';
-        el.style.display = 'none';
-    });
+  // Hide inline validation messages
+  form.querySelectorAll('.text-danger.small').forEach(el => {
+    el.textContent = '';
+    el.style.display = 'none';
+  });
 
-    // Hide image error span
-    const imgErr = document.getElementById('img-error');
-    if (imgErr) imgErr.style.display = 'none';
+  // Hide image error span
+  const imgErr = document.getElementById('img-error');
+  if (imgErr) imgErr.style.display = 'none';
 
-    // Restore preserved hidden values
-    Object.keys(preservedValues).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = preservedValues[id];
-    });
+  // Restore preserved hidden values
+  Object.keys(preservedValues).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = preservedValues[id];
+  });
 
-    // Make all inputs editable again
-    form.querySelectorAll('input, select, textarea').forEach(input => {
-        input.readOnly = false;
-        input.disabled = false;
-    });
+  // Make all inputs editable again
+  form.querySelectorAll('input, select, textarea').forEach(input => {
+    input.readOnly = false;
+    input.disabled = false;
+  });
 
-    // Explicitly enable student image field
-    const studentImg = document.getElementById('id_student_img');
-    const stu_id = document.getElementById('id_student_id');
-    const stu_inst = document.getElementById('id_installment_no');
-    const course_fee = document.getElementById('id_course_fees');
-    if (stu_id && course_fee && stu_inst) {
-        stu_id.readOnly = true;
-        stu_inst.readOnly = true;
-        course_fee.readOnly = true;
-    }
-    if (studentImg) {
-        studentImg.disabled = false;
-        studentImg.readOnly = false;
-    }
+  // Explicitly enable student image field
+  const studentImg = document.getElementById('id_student_img');
+  const stu_id = document.getElementById('id_student_id');
+  const stu_inst = document.getElementById('id_installment_no');
+  const course_fee = document.getElementById('id_course_fees');
+  if(stu_id && course_fee && stu_inst){
+    stu_id.readOnly = true;
+    stu_inst.readOnly = true;
+    course_fee.readOnly = true;
+  }
+  if (studentImg) {
+    studentImg.disabled = false;
+    studentImg.readOnly = false;
+  }
 
-    // Focus first visible input
-    const first = form.querySelector('input:not([type=hidden]):not([type=file]), select, textarea');
-    if (first) first.focus();
+  // Focus first visible input
+  const first = form.querySelector('input:not([type=hidden]):not([type=file]), select, textarea');
+  if (first) first.focus();
 });
-
-
-
-
 

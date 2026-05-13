@@ -41,7 +41,6 @@ class StudentForm(forms.ModelForm):
         
         # Show today's date if not editing an existing instance
         if not self.instance.pk:
-            self.fields['student_img'].required = False
             self.fields['fees_date'].initial = date.today()
             self.fields['dob'].initial=date.today()
             self.fields['installment_no'].initial=1

@@ -89,8 +89,7 @@ def search_student_ids(request):
         'exact_match': exact_match
     })
 
-# Yeh function kaam karta hai jab tu ek student select karta hai (dropdown se) —
-# toh uske poore details form me auto-fill ho jaate hain.
+
 def get_student_details(request, student_id):
     try:
         student = get_object_or_404(Student, pk=student_id)
@@ -107,7 +106,6 @@ def get_student_details(request, student_id):
             'course_fees': student.course_fees,
             'installment_no': int(student.installment_no)+1,
         }
-        # Yeh line ye data dictionary ko JSON format me convert karke frontend (JavaScript) ko bhej rhi hai.
         return JsonResponse(data)
     except Student.DoesNotExist:
         return JsonResponse({'error': 'Student not found'}, status=404)
@@ -187,11 +185,10 @@ def search_student_default_ids(request):
 
 
 
-
 def collect_fees(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    # Redirect to root URL with student_id as a query parameter
-    return redirect(f'/?q={student.Student_id}')
+    # Redirect to fees page with student_id as a query parameter
+    return redirect(f'/fees/?q={student.Student_id}')
 
 
 
@@ -224,7 +221,4 @@ def delete_installment(request):
         installment.delete()
 
         return JsonResponse({"status": "success", "message": "Installment deleted"})
-    
-
-
 
