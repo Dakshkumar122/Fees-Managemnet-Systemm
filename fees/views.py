@@ -185,10 +185,12 @@ def search_student_default_ids(request):
 
 
 
+from django.urls import reverse
+
 def collect_fees(request, pk):
     student = get_object_or_404(Student, pk=pk)
     # Redirect to fees page with student_id as a query parameter
-    return redirect(f'/fees/?q={student.Student_id}')
+    return redirect(f"{reverse('fees')}?q={student.Student_id}")
 
 
 
